@@ -7,12 +7,23 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const keys = require('../../config/keys')
 const passport = require('passport')
+const validateRegidter = require('../../validation/register')
 routeruser.post('/register',(req,res)=>{
+    const {errors,isValid} = validateRegidter(req.body);
+    if(!isValid){
+        return res.status(400).json(errors)
+    }
+   
     const email = req.body.email
  User.findOne({email}).then(user=>{
+    
     if(user){
          res.status(200).json({msg:"User Exist"})
     }
+    // else if(validerror)
+    // {
+    //     res.status(400).json({msg:validerror})
+    // }
     else 
     {
         const newUser = new User({
@@ -51,6 +62,7 @@ routeruser.post('/register',(req,res)=>{
 
 //login 
 routeruser.post('/login',(req,res)=>{
+    const validerror = validateRegidter(req.body);
     const email = req.body.email;
     const password = req.body.password;
     
