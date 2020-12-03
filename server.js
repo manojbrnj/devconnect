@@ -6,6 +6,7 @@ const comments = require('./routes/api/comments')
 const posts = require('./routes/api/posts')
 const bodyParser = require('body-parser')
 const passport = require('passport')
+const profile = require('./routes/api/profile')
 //BodyParser Middlewares
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
@@ -18,6 +19,7 @@ res.send('hello world')
 app.use('/api/users', users)
 app.use('/api/comments', comments)
 app.use('/api/posts', posts)
+app.use('/api/users', profile)
 
 
 app.listen(5000,()=>{console.log('Server Started')})
