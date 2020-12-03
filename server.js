@@ -19,7 +19,7 @@ res.send('hello world')
 app.use('/api/users', users)
 app.use('/api/comments', comments)
 app.use('/api/posts', posts)
-app.use('/api/users', profile)
+app.use('/api/profile', profile)
 
 
 app.listen(5000,()=>{console.log('Server Started')})
