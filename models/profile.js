@@ -1,5 +1,6 @@
 const {connection,Schema} = require('mongoose')
-
+const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false);
 const profileSchema = new Schema({
 
 user:{
@@ -96,18 +97,22 @@ education:[{
 social:{
     youtube:{
         type:String,
-        required:true
+       
     },
     twitter:{
-
+type:String
     },
     linkdin:{
         type:String,
-        required:true
+        
     },
     instagram:{
         type:String,
-        required:true
+       
+    },
+    facebook:{
+        type:String,
+       
     },
 },
 date:{

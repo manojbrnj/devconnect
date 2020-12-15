@@ -73,7 +73,7 @@ User.findOne({email}).then(user=>{
         bcrypt.compare(password,user.password).then(isMatch=>{
             if(isMatch)
             {
-            jwt.sign({id:user.id,avatar:user.avatar,name:user.name},keys.secrateKey,{expiresIn:3600},(err,token)=>{
+            jwt.sign({id:user.id,avatar:user.avatar,name:user.name},keys.secrateKey,{expiresIn:360000000},(err,token)=>{
 res.json({success:true,
     token:'Bearer ' + token
 })
@@ -99,4 +99,15 @@ res.json({success:true,
  routeruser.get('/current',passport.authenticate('jwt',{session:false}),(req,res)=>{
     res.json(req.user)
 })
+
+
+
+routeruser.get('/all',(req,res)=>{
+ User.find().then(user=>{
+    return res.status(200).json(user)
+ })
+})
+
+
+
 module.exports = routeruser

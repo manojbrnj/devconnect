@@ -1,6 +1,7 @@
 const {connection,Schema} = require('mongoose')
 const bcrypt = require('bcryptjs')
-
+const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false);
 const UserSchema = new Schema({
     name:{
         type:String,
