@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import axios from 'axios'
 class Register extends Component {
 
     constructor() {
@@ -8,6 +8,7 @@ class Register extends Component {
             name: "",
             email: "",
             password: "",
+            cpassword: "",
             errors: ""
         }
         this.formUpdate =this.formUpdate.bind(this)
@@ -32,9 +33,14 @@ class Register extends Component {
 let data={
     name:this.state.name,
     email:this.state.email,
+    password:this.state.password,
+    cpassword:this.state.cpassword,
    errors : this.state.errors
 }
 console.log(data)
+axios.post('/api/users/register',data).then(res=>{
+    console.log(res.data)
+})
     }
 
 
@@ -59,7 +65,7 @@ console.log(data)
                                     <input type="password" onChange={this.formUpdate} value={this.state.password} className="form-control form-control-lg" placeholder="Password" name="password" />
                                 </div>
                                 <div className="form-group">
-                                    <input type="password" onChange={this.formUpdate} value={this.state.password} className="form-control form-control-lg" placeholder="Confirm Password" name="password2" />
+                                    <input type="password" onChange={this.formUpdate} value={this.state.cpassword} className="form-control form-control-lg" placeholder="Confirm Password" name="cpassword" />
                                 </div>
                                 <input type="submit"  className="btn btn-info btn-block mt-4" />
                             </form>

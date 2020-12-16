@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import axios from 'axios'
 
 
 
@@ -27,9 +27,12 @@ onChange(event){
 onSubmit(event){
 event.preventDefault();
     const data= {
-        email: this.state.email
+        email: this.state.email,
+        password:this.state.password
     }
-    console.log(data)
+
+    axios.post("api/users/login",data).then(res=>{console.log(res.data.token)}).catch(err=>{console.log(`line number 34 Loginjs client ${err}`)})
+    
 }
 
 
