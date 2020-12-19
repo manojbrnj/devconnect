@@ -19,7 +19,7 @@ const UserSchema = new Schema({
         type:String,
         required:true
     },
-    data:{
+    date:{
         type:Date,
        default:Date.now()
     }
@@ -35,22 +35,12 @@ try {
  const hash =await bcrypt.hash(this.password,salt);
 
  this.password = hash;
-
-
-
-
-
  next()
 } catch (error) {
     next(error)
 }
 
 })
-
-
-
-
-
 const user = connection.model("users",UserSchema)
 
 module.exports = user

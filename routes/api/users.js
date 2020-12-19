@@ -35,8 +35,10 @@ routeruser.post('/register', (req, res) => {
                 password: req.body.password
 
             })
-            newUser.save();
-            res.send(newUser)
+            newUser.save().then(user=>{
+                res.json(user)
+            }).catch(err=>console.log(err))
+           
         }
 
 
@@ -56,14 +58,17 @@ routeruser.post('/login', (req, res) => {
 
   if(!isValid)
   {
-res.status(400).json({msg:" username or password is wrong",errors})
+     return res.status(400).json(errors)
  }
 
     User.findOne({ email }).then(user => {
 
         if (user) {
             bcrypt.compare(password, user.password).then(isMatch => {
-                if (isMatch) {
+                if (!isMatch) {
+                  res.status(400).json(errors.pwderr="Email or password is not valid")
+                }
+                else {
                     jwt.sign({ id: user.id, avatar: user.avatar, name: user.name }, keys.secrateKey, { expiresIn: 360000000 }, (err, token) => {
                         res.json({
                             success: true,
@@ -72,19 +77,16 @@ res.status(400).json({msg:" username or password is wrong",errors})
 
                     })
                 }
-                else {
-                    res.status(400).json({ msg: " email & password don't match" })
-                }
             })
 
 
         }
 
         else {
-            res.status(404).json({msg :"user not found",errors})
+            res.status(404).json({msg:"user not found"})
         }
 
-    })
+    }).catch(res=>res.status(400).json(errors))
 
 
 

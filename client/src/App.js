@@ -5,10 +5,14 @@ import Landing from './components/Landing'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import {BrowserRouter,Route} from 'react-router-dom'
-
-
-function App() {
-  return (
+import {Provider} from 'react-redux'
+import store from './Store'
+ import React, { Component } from 'react'
+ 
+ class App extends Component {
+   render() {
+     return (
+      <Provider store = {store}>
     <BrowserRouter>
     <div className="App">
       
@@ -25,7 +29,12 @@ function App() {
 
     </div>
     </BrowserRouter>
-  );
-}
+    </Provider>
+     )
+   }
+ }
+ 
+
+
 
 export default App;
