@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import classname from 'classnames'
 import {connect} from 'react-redux'
-
+import PropTypes from 'prop-types'
 import {registerAction} from '../../Actions/registerActions';
-
+import {withRouter} from 'react-router-dom'
 class Register extends Component {
 
     constructor() {
@@ -20,7 +19,7 @@ class Register extends Component {
         this.onSubmit = this.onSubmit.bind(this)
     }
 
-
+ 
     formUpdate(event) {
 
         this.setState(
@@ -44,26 +43,28 @@ class Register extends Component {
         }
         console.log(data)
 
-        this.props.registerAction(data)
+        this.props.registerAction(data,this.props.history)
 
-        // axios.post('/api/users/register', data).then(res => {
-        //     console.log(res.data)
-        // }).catch(err => {
-            
-        //     this.setState({ errors: err.response.data });
-        //     console.log(this.state.errors)
-
-        // })
+     
     }
+
+
+componentWillReceiveProps(nextProps){
+    if(nextProps.error){
+      
+        this.setState({errors:nextProps.error.data})
+        
+    }
+}
 
 
     render() {
         const {errors} = this.state;
-        const {user} = this.props.auth; // here we are using data coming from combine reducers where all reducers data is available on single place
+       // here we are using data coming from combine reducers where all reducers data is available on single place
         return (
             // <!-- Register -->
             <div className="register">
-                {user ? user.name : null}
+            
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
@@ -71,7 +72,7 @@ class Register extends Component {
                             <p className="lead text-center">Create your DevConnector account</p>
                             <form onSubmit={this.onSubmit} >
                                 <div className="form-group">
-                                    <input type="text" onChange={this.formUpdate} className={classname("form-control form-control-lg",{'is-invalid':errors.name})} placeholder="Name" value={this.state.name} name="name" required />
+                                    <input type="text" onChange={this.formUpdate} className={classname("form-control form-control-lg",{'is-invalid':errors.name})} placeholder="Name" value={this.state.name} name="name" />
         {errors.name && <div className="invalid-feedback">{errors.name}</div> }
                                 </div>
                                 <div className="form-group">
@@ -100,8 +101,16 @@ class Register extends Component {
 }
 
 
+Register.propTypes = {
+    registerAction:PropTypes.func.isRequired,
+    auth:PropTypes.object.isRequired,
+    error:PropTypes.object.isRequired
+};
+
+//here we set auth as  props so we can use this.props.auth
 
 const  mapStateToProps=(state) =>({   
-     auth:state.auth   //this auth is from combine reducers to access auth from combine reducer so we can use data from action like : this.props.auth.user // in simple this data is coming from redux which we have implemented
+     auth:state.auth ,
+     error:state.errors  // (state.auth) this auth is from combine reducers to access auth from combine reducer so we can use data from action like : this.props.auth.user // in simple this data is coming from redux which we have implemented
   });
-export default connect(mapStateToProps,{registerAction})(Register); //connect is from react-redux connect is hof (higher order function) here we are passing action son we can access that action and gice data to action funtion as we know action s are funtions  
+export default connect(mapStateToProps,{registerAction})(withRouter(Register)); //connect is from react-redux connect is hof (higher order function) here we are passing action son we can access that action and gice data to action funtion as we know action s are funtions  

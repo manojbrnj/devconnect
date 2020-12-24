@@ -1,1 +1,3 @@
 export const TEST_DISPATCH = 'TEST_DISPATCH';
+export const TEST_LOGIN_ERROR = 'TEST_LOGIN_ERROR';
+export const TEST_ERRORS = 'TEST_ERRORS';

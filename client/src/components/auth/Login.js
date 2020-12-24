@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import classnames from 'classnames'
+import {connect} from 'react-redux'
+import {LoginAction} from '../../Actions/LoginAction';
 
 
 class Login extends Component {
@@ -31,13 +33,24 @@ event.preventDefault();
         password:this.state.password
     }
 
-   axios.post("api/users/login",data).then(res=>{console.log(res.data.token)}).catch(err=>{this.setState({errors: err.response.data
-  })
-  console.log(this.state.errors)
+  //  axios.post("api/users/login",data).then(res=>{console.log(res.data.token)}).catch(err=>{this.setState({errors: err.response.data
+  // })
+  // console.log(this.state.errors)
   
-  })
-    
+  // })
+    this.props.LoginAction(data);
+
+
 }
+
+
+componentWillReceiveProps(nextProps){
+  if(nextProps.loginerrorsx){
+      this.setState({errors:nextProps.loginerrorsx.data})
+  }
+}
+
+
 
 
     render() {
@@ -76,4 +89,13 @@ event.preventDefault();
         )
     }
 }
-export default Login
+
+
+const  mapStateToProps=(state) =>({   
+ loginerrorsx:state.loginerrors  // (state.auth) this auth is from combine reducers to access auth from combine reducer so we can use data from action like : this.props.auth.user // in simple this data is coming from redux which we have implemented
+});
+
+
+
+
+export default connect(mapStateToProps,{LoginAction})(Login)
